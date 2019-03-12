@@ -17,7 +17,22 @@ struct Tile {
     is_black: bool,
 }
 
-fn update_ant() {}
+enum Direction {
+    North,
+    South,
+    East,
+    West,
+}
+
+struct Ant {
+    x: i32,
+    y: i32,
+    facing: Direction,
+}
+
+fn update_ant(ant: &mut Ant, tiles: &mut Vec<Vec<Tile>>) {
+    unimplemented!();
+}
 
 fn main() {
     //assert that constants are acceptable
@@ -56,6 +71,13 @@ fn main() {
         }
     }
 
+    //initial ant population
+    let mut ant = Ant {
+        x: (BOARD_LEN / 2) as i32,
+        y: (BOARD_LEN / 2) as i32,
+        facing: Direction::North,
+    };
+
     //clear screen and initially draw the tiles
     let white = Color::RGB(255, 255, 255);
     let black = Color::RGB(0, 0, 0);
@@ -76,8 +98,8 @@ fn main() {
                 _ => {}
             }
         }
-        //TODO: Main calculations before showing the screen
-        update_ant();
+        //Main calculations before showing the screen
+        update_ant(&mut ant, &mut tiles);
 
         //draw the tiles
         let white_rects: Vec<Rect> = tiles
