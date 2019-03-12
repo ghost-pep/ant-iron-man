@@ -31,7 +31,50 @@ struct Ant {
 }
 
 fn update_ant(ant: &mut Ant, tiles: &mut Vec<Vec<Tile>>) {
-    unimplemented!();
+    //check the underlying tile for right or left turn
+    let turn_left = tiles[ant.x as usize][ant.y as usize].is_black;
+    //flip the tile
+    tiles[ant.x as usize][ant.y as usize].is_black =
+        !tiles[ant.x as usize][ant.y as usize].is_black;
+    //turn based on direction
+    match ant.facing {
+        Direction::North => {
+            if turn_left {
+                ant.x -= 1;
+                ant.facing = Direction::West;
+            } else {
+                ant.x += 1;
+                ant.facing = Direction::East;
+            }
+        }
+        Direction::South => {
+            if turn_left {
+                ant.x += 1;
+                ant.facing = Direction::East;
+            } else {
+                ant.x -= 1;
+                ant.facing = Direction::West;
+            }
+        }
+        Direction::East => {
+            if turn_left {
+                ant.y += 1;
+                ant.facing = Direction::North;
+            } else {
+                ant.y -= 1;
+                ant.facing = Direction::South;
+            }
+        }
+        Direction::West => {
+            if turn_left {
+                ant.y -= 1;
+                ant.facing = Direction::South;
+            } else {
+                ant.y += 1;
+                ant.facing = Direction::North;
+            }
+        }
+    }
 }
 
 fn main() {
@@ -81,12 +124,14 @@ fn main() {
     //clear screen and initially draw the tiles
     let white = Color::RGB(255, 255, 255);
     let black = Color::RGB(0, 0, 0);
+    let red = Color::RGB(255, 0, 0);
+    let light_blue = Color::RGB(0, 255, 255);
     canvas.set_draw_color(white);
     canvas.clear();
 
     //main loop for the process
     'running: loop {
-        canvas.set_draw_color(Color::RGB(0, 255, 255));
+        canvas.set_draw_color(light_blue);
         canvas.clear();
         for event in event_pump.poll_iter() {
             match event {
@@ -118,6 +163,11 @@ fn main() {
         canvas.fill_rects(&white_rects).unwrap();
         canvas.set_draw_color(black);
         canvas.fill_rects(&black_rects).unwrap();
+        //draw the ant on top of whatever square it is
+        canvas.set_draw_color(red);
+        canvas
+            .fill_rect(tiles[ant.x as usize][ant.y as usize].rect)
+            .unwrap();
         canvas.present();
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
