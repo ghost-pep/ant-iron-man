@@ -6,8 +6,8 @@ use sdl2::pixels::Color;
 use sdl2::rect::Rect;
 use std::time::Duration;
 
-const WIN_SIZE: u32 = 820;
-const TILE_SIZE: u32 = 20;
+const WIN_SIZE: u32 = 1000;
+const TILE_SIZE: u32 = 5;
 const BOARD_LEN: u32 = WIN_SIZE / TILE_SIZE;
 const NUM_TILES: u32 = BOARD_LEN * BOARD_LEN;
 
